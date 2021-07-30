@@ -1,6 +1,6 @@
 const SZ_GRID = 40;
 const COUNTDOWN_TIMER = 3;
-const TICKS_PER_SECOND = 15;
+const FRAME_RATE = 15;
 const COLORS = [
 	'#ff0000',
 	'#00ff00',
@@ -30,7 +30,7 @@ const KEYCODES = {
 module.exports = {
 	SZ_GRID,
 	COUNTDOWN_TIMER,
-	TICKS_PER_SECOND,
+	FRAME_RATE,
 	COLORS,
 	KEYCODES
 }

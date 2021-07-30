@@ -5,8 +5,8 @@ const { SZ_GRID, COUNTDOWN_TIMER, KEYCODES } = require('./constants');
  */
 function firstGameState(players) {
 	const initState = {
-		gridSize: SZ_GRID,
-		countDown: COUNTDOWN_TIMER,
+		gridsize: SZ_GRID,
+		countdown: COUNTDOWN_TIMER,
 
 		players: [],
 		scores: [],
