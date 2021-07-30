@@ -1,4 +1,4 @@
-const { SZ_GRID, COUNTDOWN_TIMER, KEYCODES } = require('./constants');
+const { SZ_GRID, COUNTDOWN_TIMER, KEYCODES } = require('./constHelper');
 
 /**
  * the player can be singleplayer / multiplayer in a room

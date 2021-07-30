@@ -46,7 +46,7 @@ function assignRandomColor(room) {
 }
 
 ////////////////////////////HIGHSCORES
-function readFromHighscores() {
+async function readFromHighscores() {
 	try {
 		const data = await fs.readFile(path.join(__dirname, './../scores.json'), 'utf8');
 

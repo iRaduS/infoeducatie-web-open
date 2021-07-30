@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 80;
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`[Express]: Application listens at http://localhost:${PORT}`);
 })
-const io = new ioServer();
+const io = ioServer();
 io.attach(server);
 
 
@@ -57,6 +57,204 @@ io.on('connection', client => {
   client.on('changeSnakeColor', handleChangeSnakeColor);
   client.on('isReady', handleIsReady);
   client.on('keydown', handleKeydown);
+
+  function handleNewUser(newUser) {
+    USERS[newUser.userid] = newUser;
+    newUser.scores = [];
+    newUser.roomScores = [];
+
+    io.emit('updateUserList', USERS);
+    client.emit('updateRoomList', initClientRooms(CLIENTROOMS));
+    client.emit('updateHighscores', HIGHSCORES);
+  }
+  
+  function handleNewRoom(newRoom) {
+    newRoom.roomId = generateRoomID(CLIENTROOMS);
+
+    if (newRoom.name === '' || newRoom.maxPlayers === '' || newRoom.gameMode === '') {
+      client.emit('refuseNewRoom', 'empty');
+      return;
+    }
+    if (newRoom.maxPlayers < 1 || newRoom.maxPlayers > 6) {
+      client.emit('refuseNewRoom', 'maxPlayers');
+      return;
+    }
+    let nameTaken = false;
+    for (const value of Object.values(CLIENTROOMS)) {
+      if (newRoom.name.toLowerCase() === value.name.toLowerCase()) nameTaken = true;
+    }
+    if (nameTaken) {
+      client.emit('refuseNewRoom', 'nameTaken');
+      return;
+    }
+
+    CLIENTROOMS[newRoom.roomId] = newRoom;
+    handleJoinRoom(newRoom.roomId);
+    io.emit('updateRoomList', initClientRooms(CLIENTROOMS));
+  }
+
+  function handleDisconnect() {
+    if (USERS[client.id]) {
+      handleLeaveRoom();
+
+      delete USERS[client.id];
+      io.emit('updateUserList', USERS);
+    }
+  }
+
+  function handleJoinRoom(roomId) {
+    const user = USERS[client.id];
+
+    if (user.inRoom === roomId) return;
+
+    const newRoom = CLIENTROOMS[roomId];
+
+    if (newRoom.players.length >= newRoom.maxPlayers) {
+      client.emit('roomAlreadyFull');
+      return;
+    }
+
+    handleLeaveRoom();
+
+    user.inRoom = roomId;
+    user.snakeColor = assignRandomColor(newRoom);
+
+    newRoom.players.push(user);
+    client.join(roomId);
+
+    if (newRoom.gameState != null) {
+      client.emit('gameState', newRoom.gameState);
+    }
+
+    const flatRooms = initClientRooms(CLIENTROOMS);
+
+    client.emit('joinRoom', flatRooms[roomId]);
+    io.emit('updateRoomList', flatRooms);
+    io.in(roomId).emit('updateRoomPlayerList', flatRooms[roomId].players);
+  }
+  
+  function handleLeaveRoom() {
+    const user = USERS[client.id];
+    const roomId = user.inRoom;
+
+    if (!roomId) return;
+    const room = CLIENTROOMS[roomId];
+
+    user.inRoom = null;
+    user.isReady = false;
+    user.roomScores = [];
+
+    room.players = room.players.filter(player => player.userid !== client.id);
+
+    if (room.gameState != null) {
+      room.gameState.players = room.gameState.players.filter(player => player.id !== client.id);
+      io.in(roomId).emit('gameState', room.gameState);
+    }
+    client.leave(roomId);
+
+    if (room.players.length === 0) {
+      delete CLIENTROOMS[roomId];
+    } else {
+      io.in(roomId).emit('updateRoomPlayerList', room.players);
+      CheckEveryoneReady(room);
+    }
+    io.emit('updateRoomList', initClientRooms(CLIENTROOMS));
+    client.emit('leaveRoom');
+  }
+
+  function handleCheckPassword(roomId, password) {
+    const room = CLIENTROOMS[roomId];
+
+    if (room) {
+      if (room.password.toString() === password) {
+        return client.emit('passwordValid', true, room.roomId);
+      }
+    }
+
+    client.emit('passwordValid', false, roomId);
+  }
+
+  function handleInvitePlayer(playerId) {
+    const inviter = USERS[client.id];
+    const inviterRoom = CLIENTROOMS[inviter.inRoom];
+    const player = USERS[playerId];
+    const inRoom = player.inRoom;
+    let failReason;
+
+    if (inviterRoom == null) {
+      failReason = 'noInviterRoom';
+    } else if (inRoom != null) {
+      failReason = 'alreadyInRoom';
+    } else if (inviterRoom.players.length >= inviterRoom.maxPlayers) {
+      failReason = 'roomFull';
+    }
+
+    if (failReason) client.emit('inviteFailed', failReason);
+    else io.to(playerId).emit('playerInvited', inviterRoom.roomId, inviter.username);
+  }
+
+  function handleColorRequest() {
+    const room = CLIENTROOMS[USERS[client.id].inRoom];
+    const playerColors = room.players.map(p => p.snakeColor);
+    const colorList = COLORS.filter(c => !playerColors.includes(c));
+
+    client.emit('remainingRoomColors', client.id, colorList);
+  }
+
+  function handleChangeSnakeColor(color) {
+    USERS[client.id].snakeColor = color;
+    const room = CLIENTROOMS[USERS[client.id].inRoom];
+
+    io.in(room.roomId).emit('updateRoomPlayerList', room.players);
+  }
+
+  function handleIsReady() {
+    const user = USERS[client.id];
+    const room = CLIENTROOMS[user.inRoom];
+
+    if (room.gameStarted) return;
+
+    user.isReady = true;
+    io.in(room.roomId).emit('updateRoomPlayerList', room.players);
+
+    if (room.gameState == null) {
+      room.gameState = firstGameState(generatePlayer(user));
+    } else {
+      attachPlayerInGame(room.gameState, generatePlayer(user));
+    }
+
+    io.in(room.roomId).emit('gameState', room.gameState);
+    CheckEveryoneReady(room);
+  }
+
+  function handleKeydown(keyCode) {
+    if (!USERS[client.id]) return;
+
+    const room = CLIENTROOMS[USERS[client.id].inRoom];
+
+    if (typeof room === 'undefined') return;
+    if (!room.gameStarted) return;
+
+    try {
+      keyCode = parseInt(keyCode);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+
+    const vel = getVelocity(keyCode);
+    const player = room.gameState.players.find(p => p.id === client.id);
+
+    if (vel && player) {
+      if (player.vel.x * vel.x + player.vel.y * vel.y !== -1 &&
+          (player.vel.x !== vel.x && player.vel.y !== vel.y)) {
+        if (player.velUpdate) {
+          player.vel = vel;
+          player.velUpdate = false;
+        }
+      }
+    }
+  }
 });
 
 function CheckEveryoneReady(room) {
