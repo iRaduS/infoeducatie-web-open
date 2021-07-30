@@ -27,7 +27,7 @@ const KEYCODES = {
 	KEY_UP_ARROW: 40,
 }
 
-module.exports {
+module.exports = {
 	SZ_GRID,
 	COUNTDOWN_TIMER,
 	TICKS_PER_SECOND,

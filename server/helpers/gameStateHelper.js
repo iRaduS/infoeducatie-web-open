@@ -11,7 +11,7 @@ function firstGameState(players) {
 		players: [],
 		scores: [],
 		food: {},
-		timer: 0
+		time: 0
 	};
 
 	if (Array.isArray(players)) {
@@ -35,9 +35,8 @@ function attachPlayerInGame(player, state) {
 		statePlayer = generateTemplate();
 	}
 
-	statePlayer.color = player.color;
 	statePlayer.id = player.id;
-	statePlayer.velocityUpdate = true;
+	statePlayer.velUpdate = true;
 	statePlayer.snakeColor = player.snakeColor;
 	state.players.push(statePlayer);
 
@@ -51,7 +50,7 @@ function attachPlayerInGame(player, state) {
 function generateTemplate() {
 	const beginTemplate = {
 		pos: { x: 3, y: 10 },
-		velocity: { x: 1, y: 0 },
+		vel: { x: 1, y: 0 },
 		snake:[{ x: 1, y: 10}, { x: 2, y: 10 }, { x: 3, y: 10 }]
 	};
 
@@ -70,8 +69,8 @@ function generateTemplate() {
 
 			beginTemplate.pos.x = xPos;
 			beginTemplate.pos.y = 3;
-			beginTemplate.velocity.x = 0;
-			beginTemplate.velocity.y = 1;
+			beginTemplate.vel.x = 0;
+			beginTemplate.vel.y = 1;
 			beginTemplate.snake.forEach((block, i) =>  {
 				block.x = xPos;
 				block.y = i + 1;
@@ -85,7 +84,7 @@ function generateTemplate() {
 
 			beginTemplate.pos.y = yPos;
 			beginTemplate.pos.x = SZ_GRID - 4;
-			beginTemplate.velocity.x = -1;
+			beginTemplate.vel.x = -1;
 			beginTemplate.snake.forEach((block, i) => {
 				block.y = yPos;
 				block.x = SZ_GRID - (i + 2);
@@ -99,8 +98,8 @@ function generateTemplate() {
 
 			beginTemplate.pos.x = xPos;
 			beginTemplate.pos.y = SZ_GRID - 4;
-			beginTemplate.velocity.x = 0;
-			beginTemplate.velocity.y = -1;
+			beginTemplate.vel.x = 0;
+			beginTemplate.vel.y = -1;
 			beginTemplate.snake.forEach((block, i) => {
 				block.x = xPos;
 				block.y = SZ_GRID - (i + 2);

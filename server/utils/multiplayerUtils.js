@@ -65,7 +65,7 @@ function readFromHighscores() {
 function writeToHighscores(highScores) {
 	fs.writeFile(path.join(__dirname, './../scores.json'), JSON.stringify(highScores), err => {
 		if (err) {
-			console.log(`Error: Write scores.json ${e}.`);
+			console.log(`Error: Write scores.json ${err}.`);
 		}
 	})
 }
@@ -73,8 +73,8 @@ function writeToHighscores(highScores) {
 //////////////////////////PlayerStuff
 function generatePlayer(player) {
 	return {
-		id: player.userID,
-		color: player.color
+		id: player.userid,
+		snakeColor: player.snakeColor
 	};
 }
 
