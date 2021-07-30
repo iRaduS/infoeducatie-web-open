@@ -44,6 +44,82 @@ function attachPlayerInGame(player, state) {
 	return state;
 }
 
+
+/**
+ * generate a player's template which starts from a random position
+ */
+function generateTemplate() {
+	const beginTemplate = {
+		pos: { x: 3, y: 10 },
+		velocity: { x: 1, y: 0 },
+		snake:[{ x: 1, y: 10}, { x: 2, y: 10 }, { x: 3, y: 10 }]
+	};
+
+	switch (getRangeRandom(0, 4)) { // this should start from a random SIDE!!! facing to the center
+		case 0: {
+			const yPos = randomGridSide();
+			
+			beginTemplate.pos.y = yPos;
+			beginTemplate.snake.forEach(block => block.y = y);
+
+			break;
+		}
+
+		case 1: {
+			const xPos = randomGridSide();
+
+			beginTemplate.pos.x = xPos;
+			beginTemplate.pos.y = 3;
+			beginTemplate.velocity.x = 0;
+			beginTemplate.velocity.y = 1;
+			beginTemplate.snake.forEach((block, i) =>  {
+				block.x = xPos;
+				block.y = i + 1;
+			});
+
+			break;
+		}
+
+		case 2: {
+			const yPos = randomGridSide();
+
+			beginTemplate.pos.y = yPos;
+			beginTemplate.pos.x = SZ_GRID - 4;
+			beginTemplate.velocity.x = -1;
+			beginTemplate.snake.forEach((block, i) => {
+				block.y = yPos;
+				block.x = SZ_GRID - (i + 2);
+			});
+
+			break;
+		}
+
+		case 3: {
+			const xPos = randomGridSide();
+
+			beginTemplate.pos.x = xPos;
+			beginTemplate.pos.y = SZ_GRID - 4;
+			beginTemplate.velocity.x = 0;
+			beginTemplate.velocity.y = -1;
+			beginTemplate.snake.forEach((block, i) => {
+				block.x = xPos;
+				block.y = SZ_GRID - (i + 2);
+			})
+
+			break;
+		}
+	}
+
+	return beginTemplate;
+}
+
+/**
+ * get a value from where the snake should start (exclude top and bot)
+ */
+function randomGridSide() {
+	return getRangeRandom(SZ_GRID / 4, 3 * SZ_GRID / 4);
+}
+
 /**
  * check if the snake thingie can start on a certain position
  */
@@ -83,4 +159,20 @@ function getVelocity(keyCode) {
 		case KEYCODES.KEY_DOWN_ARROW: return { x: 0, y: -1 };
 		default: return null;
 	}
+}
+
+/**
+ * generates a random integer between min and max
+ */
+function getRangeRandom(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+module.exports = {
+	firstGameState,
+	getVelocity,
+	attachPlayerInGame
 }
