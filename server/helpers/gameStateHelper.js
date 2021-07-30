@@ -58,9 +58,9 @@ function generateTemplate() {
 	switch (getRangeRandom(0, 4)) { // this should start from a random SIDE!!! facing to the center
 		case 0: {
 			const yPos = randomGridSide();
-			
+
 			beginTemplate.pos.y = yPos;
-			beginTemplate.snake.forEach(block => block.y = y);
+			beginTemplate.snake.forEach(block => block.y = yPos);
 
 			break;
 		}
