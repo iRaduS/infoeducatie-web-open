@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7b3d1d1-3383-4ad2-8cdb-e9532ac43282" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/infoeducatie-web-open.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/flow/GameFlowBase.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/flow/GameFlowNC.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/helpers/constHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/helpers/constHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/helpers/gameStateHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/helpers/gameStateHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/utils/multiplayerUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/utils/multiplayerUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/helper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +15,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -37,6 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -48,7 +45,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1627678806478</updated>
-      <workItem from="1627678807694" duration="1042000" />
+      <workItem from="1627678807694" duration="7066000" />
     </task>
     <servers />
   </component>
