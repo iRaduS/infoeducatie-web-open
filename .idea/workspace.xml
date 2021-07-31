@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7b3d1d1-3383-4ad2-8cdb-e9532ac43282" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/app.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/js/helper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/helpers/gameStateHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/helpers/gameStateHelper.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +47,10 @@
       <option name="presentableId" value="Default" />
       <updated>1627678806478</updated>
       <workItem from="1627678807694" duration="7066000" />
+      <workItem from="1627707174780" duration="2745000" />
+      <workItem from="1627711844085" duration="1053000" />
+      <workItem from="1627713014241" duration="125000" />
+      <workItem from="1627713201888" duration="469000" />
     </task>
     <servers />
   </component>
@@ -62,5 +67,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

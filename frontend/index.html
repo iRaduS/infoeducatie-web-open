@@ -16,10 +16,164 @@
     </head>
     <body>
         <div id="DIV_status">
-            <span id="DIV_status-buttons">Status</span>
+            <span id="SPA_status">status</span>
             <div id="DIV_status-buttons">
                 <button id="BTN_status-yes" class="btn">Yes</button>
                 <button id="BTN_status-no" class="btn">No</button>
+            </div>
+        </div>
+
+        <div id="room-list-container" class="list disabled">
+            <div id="room-list-header" class="list-header center">
+                <p>Rooms</p>
+            </div>
+            <ul id="room-list" class="scroll">
+                <li id="add-room" class="list-item-header">
+                    <div>
+                        <h3>New room</h3>
+                        <button id="BTN_add-room">+</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="404-screen" class="disabled NoCon center">
+            <h1>You were disconnected from the server, there is a snakey problem!</h1>
+            <p>Refresh or come back later.</p>
+        </div>
+
+        <main id="main" class="center">
+            <label for="BTN_full-screen" id="LBL_full-screen" class="disabled">+</label>
+            <input type="checkbox" id="BTN_full-screen">
+
+            <div id="default-screen" class="disabled center">
+                <div id="DIV_highscores">
+                    <h2>Highscores</h2>
+                    <table id="TBL_highscores"></table>
+                </div>
+                <h2>All you need to do is to join a room from the left panel.</h2>
+                <p>And enjoy the game!</p>
+            </div>
+
+
+            <div id="login-screen" class="center">
+                <h1 id="login-header"><span id="login-header-start">E</span>KANS</h1>
+                <div id="avatar-image-container">
+                    <img id="IMG_avatar-selection" alt="Avatar Selection">
+                    <div id="avatar-button-set">
+                        <div class="flex-row">
+                            <label id ="LBL_avatar-type" for="CB_avatar-type">&plusb;</label>
+                            <input type="checkbox" id="CB_avatar-type">
+
+                            <label id ="LBL_avatar-gender" for="CB_avatar-gender">♂</label>
+                            <input type="checkbox" id="CB_avatar-gender">
+                        </div>
+                        <button id="BTN_avatar-reroll">&#x2684;</button>
+                    </div>
+                </div>
+                <form id="login-form" class="center">
+                    <input type="text" placeholder="Enter a username..." id="INP_user-name" pattern="[a-zA-z0-9 _-]*" maxlength="20" autofocus/>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+
+            <div id="add-room-popup" class="popup disabled flex-column">
+                <button id="BTN_close_add" class="btn-close">x</button>
+                <h1>New room</h1>
+                <form id="FORM_add-room" class="flex-column flex-space flex-grow">
+                    <div class="flex-column flex-space-around flex-grow">
+                        <div class="form-row">
+                            <label for="INP_room-name">Room name</label>
+                            <input type="text" id="INP_room-name" pattern="[a-zA-z0-9 _-]+" maxlength="20" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="INP_password">Passwort (opt.)</label>
+                            <input type="text" id="INP_password">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="INP_player-max">Max players (min = 1, max = 6)</label>
+                            <input type="number" id="INP_player-max" value=2 min="1" max="6" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="SEL_game-mode">Gamemode</label>
+                            <select id="SEL_game-mode" required>
+                                <option value="standard" selected>Standard</option>
+                                <option value="NC">No collisions</option>
+                                <option value="INF">No walls</option>
+                                <option value="BR">Battle Royale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Create your room</button>
+                </form>
+            </div>
+
+
+            <div id="room-preview-popup" class="popup disabled flex-column flex-space">
+                <button id="BTN_close_prev" class="btn-close">x</button>
+
+                <div>
+                    <div class="flex-row flex-gap min-width-0">
+                        <h1 id="H1_room-name" class="align-center truncate"></h1>
+                        <p id="P_room-member-count" class="align-center"></p>
+                    </div>
+                    <p>Gamemode: <span id="SPN_game-mode"></span></p>
+                    <br>
+
+                    <p>Players in the room:</p>
+                    <ul id="UL_room-members"></ul>
+                </div>
+
+                <div>
+                    <form id="FORM_enter-room-pw" class="flex-row">
+                        <button type="submit" id="BTN_enter-room" class="btn">Enter in game</button>
+                        <div id="DIV_enter-room-pw">
+                            <input type="password" id="INP_enter-room-pw" placeholder="Passwort">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div id="room-screen" class="center disabled">
+                <div id="room-player-list-container">
+                    <div id="room-player-list-header" class="list-header center">
+                        <p>Room players</p>
+                    </div>
+                    <div>
+                        <ul id="room-player-list"></ul>
+                    </div>
+                </div>
+
+                <div id="room-header" class="flex-row flex-space">
+                    <div>
+                        <h1 for="headerRoom" id="headerRoom"></h1>
+                        <label for="headerRoomModi" id="headerRoomModi"></label>
+                    </div>
+                    <p id="timer" class="align-end">00:00</p>
+                </div>
+
+                <div id="room-main">
+                    <div id="canvas-container">
+                        <!-- <canvas id="canvas"></canvas> is generated by P5.js-->
+                    </div>
+                    <button id="BTN_ready" class="btn">Ready</button>
+                    <button id="BTN_leave" class="btn">Leave room</button>
+                </div>
+            </div>
+        </main>
+
+
+        <div id="player-list-container" class="list disabled">
+            <div id="player-list-header" class="list-header center">
+                <p>Players</p>
+            </div>
+            <div class="scroll">
+                <ul id="player-list"></ul>
             </div>
         </div>
     </body>

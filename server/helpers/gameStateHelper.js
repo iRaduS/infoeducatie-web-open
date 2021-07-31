@@ -16,10 +16,10 @@ function firstGameState(players) {
 
 	if (Array.isArray(players)) {
 		for (const player of players) { // iterate through every player
-			attachPlayerInGame(player, initState);
+			attachPlayerInGame(initState, player);
 		}
 	} else {
-		attachPlayerInGame(players, initState);
+		attachPlayerInGame(initState, players);
 	}
 
 	return initState;
@@ -28,7 +28,7 @@ function firstGameState(players) {
 /**
  * adds a player to the state
  */
-function attachPlayerInGame(player, state) {
+function attachPlayerInGame(state, player) {
 	let statePlayer = generateTemplate();
 
 	while (!checkStart(statePlayer, state)) {
@@ -38,6 +38,8 @@ function attachPlayerInGame(player, state) {
 	statePlayer.id = player.id;
 	statePlayer.velUpdate = true;
 	statePlayer.snakeColor = player.snakeColor;
+	statePlayer.points = 1;
+
 	state.players.push(statePlayer);
 
 	return state;
